@@ -425,3 +425,7 @@ var ClickableMap = {};
         }
     };
 }).apply(ClickableMap);
+
+if(typeof exports !== 'undefined') {
+    module.exports = ClickableMap;
+}
