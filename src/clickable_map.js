@@ -14,6 +14,8 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/> 
+
+Source code available at: https://github.com/switchingbits/clickable-map-maker
 */
 
 var ClickableMap = {};
@@ -46,15 +48,15 @@ var ClickableMap = {};
             widthUnits: 'px',
             fontSize: '12px',
             fontName: 'Arial',
-            fill: '#dddddd',
+            fill: '#92DCE5',
             hoverFill: '#ffffff',
-            disabledFill: '#333333',
-            backgroundFill: '#eeeeee',
-            innerLabelColor: '#0000ff',
+            disabledFill: '#c2c2c2',
+            backgroundFill: '#ffffff',
+            innerLabelColor: '#000000',
             outerLabelColor: '#000000',
-            hoverLabelColor: '#ff0000',
+            hoverLabelColor: '#D64933',
             borderType: null,
-            borderStroke: '#000000',
+            borderStroke: '#49aebc',
             enableShadows: true,
             popLink: false,
             showStateTitleAndDescOnHover: true,
@@ -62,25 +64,64 @@ var ClickableMap = {};
             globalLinkUrl: null,
             globalJsCallback: null,
             mapTitle: 'Choose your state below',
-            creditLink: 'Click here to create your own map at...'
+            creditLink: 'Click here to create your own map at ClickableMapMaker.com'
         };
     }
 
     // States data
     function createBaseStatesData() {
         var statesData = {
-            AL: {fullName: 'Alabama'}, AK: {fullName: 'Alaska'}, AZ: {fullName: 'Arizona'}, AR: {fullName: 'Arkansas'}, CA: {fullName: 'California'}, 
-            CO: {fullName: 'Colorado'}, CT: {fullName: 'Connecticut'}, DE: {fullName: 'Delaware'}, DC: {fullName: 'District Of Columbia'}, 
-            FL: {fullName: 'Florida'}, GA: {fullName: 'Georgia'}, HI: {fullName: 'Hawaii'}, ID: {fullName: 'Idaho'}, IL: {fullName: 'Illinois'}, 
-            IN: {fullName: 'Indiana'}, IA: {fullName: 'Iowa'}, KS: {fullName: 'Kansas'}, KY: {fullName: 'Kentucky'}, LA: {fullName: 'Louisiana'}, 
-            ME: {fullName: 'Maine'}, MD: {fullName: 'Maryland'}, MA: {fullName: 'Massachusetts'}, MI: {fullName: 'Michigan'}, 
-            MN: {fullName: 'Minnesota'}, MS: {fullName: 'Mississippi'}, MO: {fullName: 'Missouri'}, MT: {fullName: 'Montana'}, 
-            NE: {fullName: 'Nebraska'}, NV: {fullName: 'Nevada'}, NH: {fullName: 'New Hampshire'}, NJ: {fullName: 'New Jersey'}, 
-            NM: {fullName: 'New Mexico'}, NY: {fullName: 'New York'}, NC: {fullName: 'North Carolina'}, ND: {fullName: 'North Dakota'}, 
-            OH: {fullName: 'Ohio'}, OK: {fullName: 'Oklahoma'}, OR: {fullName: 'Oregon'}, PA: {fullName: 'Pennsylvania'}, 
-            RI: {fullName: 'Rhode Island'}, SC: {fullName: 'South Carolina'}, SD: {fullName: 'South Dakota'}, TN: {fullName: 'Tennessee'}, 
-            TX: {fullName: 'Texas'}, UT: {fullName: 'Utah'}, VT: {fullName: 'Vermont'}, VA: {fullName: 'Virginia'}, WA: {fullName: 'Washington'}, 
-            WV: {fullName: 'West Virginia'}, WI: {fullName: 'Wisconsin'}, WY: {fullName: 'Wyoming'}
+            AL: {fullName: 'Alabama'}, 
+            AK: {fullName: 'Alaska'}, 
+            AZ: {fullName: 'Arizona'}, 
+            AR: {fullName: 'Arkansas'}, 
+            CA: {fullName: 'California'}, 
+            CO: {fullName: 'Colorado'}, 
+            CT: {fullName: 'Connecticut'}, 
+            DE: {fullName: 'Delaware'}, 
+            DC: {fullName: 'District Of Columbia'}, 
+            FL: {fullName: 'Florida'}, 
+            GA: {fullName: 'Georgia'}, 
+            HI: {fullName: 'Hawaii'}, 
+            ID: {fullName: 'Idaho'}, 
+            IL: {fullName: 'Illinois'}, 
+            IN: {fullName: 'Indiana'}, 
+            IA: {fullName: 'Iowa'}, 
+            KS: {fullName: 'Kansas'}, 
+            KY: {fullName: 'Kentucky'}, 
+            LA: {fullName: 'Louisiana'}, 
+            ME: {fullName: 'Maine'}, 
+            MD: {fullName: 'Maryland'}, 
+            MA: {fullName: 'Massachusetts'}, 
+            MI: {fullName: 'Michigan'}, 
+            MN: {fullName: 'Minnesota'}, 
+            MS: {fullName: 'Mississippi'}, 
+            MO: {fullName: 'Missouri'}, 
+            MT: {fullName: 'Montana'}, 
+            NE: {fullName: 'Nebraska'}, 
+            NV: {fullName: 'Nevada'}, 
+            NH: {fullName: 'New Hampshire'}, 
+            NJ: {fullName: 'New Jersey'}, 
+            NM: {fullName: 'New Mexico'}, 
+            NY: {fullName: 'New York'}, 
+            NC: {fullName: 'North Carolina'}, 
+            ND: {fullName: 'North Dakota'}, 
+            OH: {fullName: 'Ohio'}, 
+            OK: {fullName: 'Oklahoma'}, 
+            OR: {fullName: 'Oregon'}, 
+            PA: {fullName: 'Pennsylvania'}, 
+            RI: {fullName: 'Rhode Island'}, 
+            SC: {fullName: 'South Carolina'}, 
+            SD: {fullName: 'South Dakota'}, 
+            TN: {fullName: 'Tennessee'}, 
+            TX: {fullName: 'Texas'}, 
+            UT: {fullName: 'Utah'}, 
+            VT: {fullName: 'Vermont'}, 
+            VA: {fullName: 'Virginia'}, 
+            WA: {fullName: 'Washington'}, 
+            WV: {fullName: 'West Virginia'}, 
+            WI: {fullName: 'Wisconsin'}, 
+            WY: {fullName: 'Wyoming'}
         };
         
         // Setup state extended properties
@@ -254,6 +295,7 @@ var ClickableMap = {};
         this.$map = global.getEleById(wrapperId);
         this.globalData = createBaseGlobalData();
         this.statesData = createBaseStatesData();
+        
         // Setup state mouseovers
         for(var stateId in this.statesData) {
             if(!this.statesData.hasOwnProperty(stateId)) {
@@ -424,8 +466,10 @@ var ClickableMap = {};
             createLiveStateLink(stateId, '-listview');
         }
     };
+
+    // Export if available
+    if(typeof exports !== 'undefined') {
+        module.exports = this;
+    }
 }).apply(ClickableMap);
 
-if(typeof exports !== 'undefined') {
-    module.exports = ClickableMap;
-}
