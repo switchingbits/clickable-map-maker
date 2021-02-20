@@ -1,5 +1,5 @@
 {
-  "name": "clickable_map_maker",
+  "name": "clickable-map-maker",
   "version": "1.0.0",
   "description": "Create clickable website maps using JS/HTML/CSS",
   "main": "example.html",

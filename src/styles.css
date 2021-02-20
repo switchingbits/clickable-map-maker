@@ -1,3 +1,23 @@
+/*
+    ClickableMapMaker.com - Clickable map website software
+    Copyright (C) 2021  ClickableMapMaker.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/> 
+
+    Source code available at: https://github.com/switchingbits/clickable-map-maker
+*/
+
 .cmm-usa {
     display: none;
     margin: 0 auto;
@@ -14,12 +34,10 @@
     stroke-miterlimit: 10;
 }
 .cmm-usa-hover-state-info {
+    position: relative;
+    margin: -40px auto 20px auto;
     display: none;
-    position: absolute;
-    top: 85%;
-    left: 50%;
     box-sizing: border-box;
-    margin-left: -150px;
     padding: 0.75em;
     width: 300px;
     border-radius: 10px;
@@ -36,20 +54,24 @@
     font-weight: bold;
     text-align: center;
 }
-.cmm-usa-link-list {
-    width: 95%;
+.cmm-usa-listview {
+    width: 100%;
+    text-align: center;
+    margin: 1em 0;
 }
-.cmm-usa-link-list ul {
+.cmm-usa-listview ul {
     vertical-align: top;
     list-style: none;
     display: inline-block;
+    text-align: left;
     margin: 0;
     padding: 0;
 }
-.cmm-usa-link-list ul li {
-    padding: 0.5em 0.25em;
+.cmm-usa-listview ul li {
+    padding: 0;
+    margin: 0;
 }
-.cmm-usa-link-list ul li span {
+.cmm-usa-listview ul li span {
     display: inline-block;
     position: relative;
     height: 12px;
@@ -63,11 +85,22 @@
     opacity: 1.0;
     margin-right: 0.5em;
 }
-.cmm-usa-link-list ul li span::after {
+.cmm-usa-listview ul li span::after {
     content: "\2B9E";
     position: relative;
     color: #333;
     font-size: 12px;
+}
+.cmm-usa-listview ul li a {
+    display: inline-block;
+    margin: 0.5em 1em 0.5em 0;
+    color: #ccc;
+    text-decoration: none;
+}
+.cmm-usa-listview ul li a.cmm-usa-live-link {
+    color: #000;
+    text-decoration: underline;
+    cursor: pointer;
 }
 .cmm-usa-title {
     width: 100%;

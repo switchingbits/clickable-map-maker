@@ -1,21 +1,21 @@
 /*
-ClickableMapMaker.com - Map creation Javascript library
-Copyright (C) 2021  ClickableMapMaker.com
+    ClickableMapMaker.com - Clickable map website software
+    Copyright (C) 2021  ClickableMapMaker.com
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/> 
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/> 
 
-Source code available at: https://github.com/switchingbits/clickable-map-maker
+    Source code available at: https://github.com/switchingbits/clickable-map-maker
 */
 
 var ClickableMap = {};
@@ -23,7 +23,7 @@ var ClickableMap = {};
 (function() { 
     var version = '1.0.0';
     var classPrefix = 'cmm-usa-';
-    var creditLinkUrl = 'http://www.clickablemapmaker.com';
+    var creditLinkUrl = 'https://www.clickablemapmaker.com';
     var stateCount = 0;
     var maxTableColumns = 5;
     var global = this;
@@ -48,7 +48,7 @@ var ClickableMap = {};
             widthUnits: 'px',
             fontSize: '12px',
             fontName: 'Arial',
-            fill: '#92DCE5',
+            fill: '#97e2bb',
             hoverFill: '#ffffff',
             disabledFill: '#c2c2c2',
             backgroundFill: '#ffffff',
@@ -56,7 +56,7 @@ var ClickableMap = {};
             outerLabelColor: '#000000',
             hoverLabelColor: '#D64933',
             borderType: null,
-            borderStroke: '#49aebc',
+            borderStroke: '#49bc95',
             enableShadows: true,
             popLink: false,
             showStateTitleAndDescOnHover: true,
@@ -64,7 +64,7 @@ var ClickableMap = {};
             globalLinkUrl: null,
             globalJsCallback: null,
             mapTitle: 'Choose your state below',
-            creditLink: 'Click here to create your own map at ClickableMapMaker.com'
+            creditLink: 'Create a clickable USA map at ClickableMapMaker.com'
         };
     }
 
@@ -131,6 +131,7 @@ var ClickableMap = {};
             }
             statesData[stateId].title = statesData[stateId].fullName;
             statesData[stateId].description = null;
+            statesData[stateId].longDescription = null;
             statesData[stateId].linkUrl = null;
             statesData[stateId].isDisabled = false;
             statesData[stateId].isHovering = false;
@@ -155,6 +156,7 @@ var ClickableMap = {};
         var $statePath = global.getEleByQuery('#' + this.$map.id + ' .' + global.stateIdToDomClass(stateId) + ' path');
         var $stateText = global.getEleByQuery('#' + this.$map.id + ' .' + global.stateIdToDomClass(stateId) + ' text');
 
+        // State fill coloring
         if(this.statesData[stateId].isDisabled) {
             $statePath.style.fill = this.globalData.disabledFill;
             $stateLink.style.cursor = 'default';
@@ -175,10 +177,25 @@ var ClickableMap = {};
             var $hoverStateInfo = global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'hover-state-info');            
             var titleText = this.statesData[stateId].title == null ? '' : this.statesData[stateId].title;
             var descText = this.statesData[stateId].description == null ? '' : this.statesData[stateId].description;
-            $hoverStateInfo.innerHTML = '<span>' + titleText + '</span><span>' + descText + '</span>';
+            var longDescText = this.statesData[stateId].longDescription == null ? '' : this.statesData[stateId].longDescription;
+            var titleSpan = document.createElement('span');
+            var descSpan = document.createElement('span');
+            titleSpan.textContent = titleText;
+            if(longDescText != '') {
+                descSpan.innerHTML = longDescText;
+            }
+            else {
+                descSpan.textContent = descText;
+            }
+            while($hoverStateInfo.firstChild) {
+                $hoverStateInfo.removeChild($hoverStateInfo.firstChild);
+            }
+            $hoverStateInfo.appendChild(titleSpan);
+            $hoverStateInfo.appendChild(descSpan);
             $hoverStateInfo.style.display = 'block';
         }
 
+        // Show shadowing
         if(!this.statesData[stateId].isDisabled && this.globalData.enableShadows) {
             statePathBlur = $statePath.cloneNode(true);
             statePathBlur.setAttribute('filter', 'url(#' + this.$map.id + '-blur-filter)');
@@ -195,12 +212,13 @@ var ClickableMap = {};
         var $stateText = global.getEleByQuery('#' + this.$map.id + ' .' + global.stateIdToDomClass(stateId) + ' text');
         var isOuterLabel = $stateText.getAttribute('class') == classPrefix + 'outer-label';
 
-        // Show current state chosen on mouse over
+        // Hide state info on mouseout
         if(this.globalData.showStateTitleAndDescOnHover) {
             var $hoverStateInfo = global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'hover-state-info');
             $hoverStateInfo.style.display = 'none';
         }
         
+        // Reset coloring
         if(this.statesData[stateId].isDisabled) {
             $statePath.style.fill = this.globalData.disabledFill;
         }
@@ -221,70 +239,6 @@ var ClickableMap = {};
                 ele.parentNode.removeChild(ele);
             }
         );
-    }
-
-    // Live state links
-    function wireStateLink(stateId) {
-        var clickFn = null;
-        var $stateLink = global.getEleByQuery('#' + this.$map.id + ' .' + global.stateIdToDomClass(stateId));
-
-        // Add css class if needed
-        if(this.statesData[stateId].cssClass != null) {
-            $stateLink.setAttribute('class', this.statesData[stateId].cssClass);
-        }
-
-        // Disabled state
-        if(this.statesData[stateId].isDisabled) {
-            clickFn = null;
-        }
-        // State specific URL
-        else if(this.statesData[stateId].linkUrl != null) {
-            clickFn = function(e) {
-                var isPop = false;
-                if(this.statesData[stateId].overridePopLink != null) {
-                    isPop = this.statesData[stateId].overridePopLink;
-                }
-                else if(this.globalData.popLink) {
-                    isPop = true;
-                }
-                if(isPop) {
-                    window.open(this.statesData[stateId].linkUrl);
-                }
-                else {
-                    document.location.href = this.statesData[stateId].linkUrl;
-                }
-            };
-        }
-        // Global link URL
-        else if(this.globalData.globalLinkUrl != null) {
-            clickFn = function(e) {
-                var normalizedUrl = globalData.globalLinkUrl.replaceAll('@state', stateId);
-                var isPop = false;
-                if(this.statesData[stateId].overridePopLink != null) {
-                    isPop = this.statesData[stateId].overridePopLink;
-                }
-                else if(this.globalData.popLink) {
-                    isPop = true;
-                }
-                if(isPop) {
-                    window.open(normalizedUrl);
-                }
-                else {
-                    document.location.href = normalizedUrl;
-                }
-            };
-        }
-        // Global Javascript callback
-        else if(this.globalData.globalJsCallback != null) {
-            clickFn = function(e) {
-                var fn = window[globalData.globalJsCallback];
-                if(typeof fn == 'function') {
-                    fn(stateId);
-                }
-            };
-        }
-
-        $stateLink.onclick = clickFn;
     }
 
     this.create = function(wrapperId) {
@@ -316,14 +270,11 @@ var ClickableMap = {};
             }.call(this, stateId));
 
             // Setup click handlers
-            wireStateLink.call(this, stateId);
+            this.wireStateLink(stateId, false);
         }
                 
         // Get an ID on the shadow
         global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'blur-filter').setAttribute('id', this.$map.id + '-blur-filter');
-
-        // Update map
-        this.draw();
     };
 
     // Get dom ID
@@ -337,7 +288,6 @@ var ClickableMap = {};
         this.$map.style.width = this.globalData.width + this.globalData.widthUnits;
         this.$map.style.backgroundColor = this.globalData.backgroundFill;
         this.$map.style.fontFamily = this.globalData.fontName;
-        var $mapSvg = global.getEleByQuery('#' + this.$map.id + ' svg').style.fontSize = this.globalData.fontSize;
         global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'title').textContent = this.globalData.mapTitle;
         if(this.globalData.creditLink != null && this.globalData.creditLink != '') {
             global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'credit-link').innerHTML = '<a target="_blank" href="' + creditLinkUrl + '"></a>';
@@ -393,6 +343,14 @@ var ClickableMap = {};
             $outerLabels.item(i).style.fill = this.globalData.outerLabelColor;
         }
 
+        // Draw the link list, if enabled
+        if(this.globalData.showLinksList) {
+            this.displayMapLinksList();
+        }
+        else {
+            global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'listview').innerHTML = '';
+        }
+
         // Display the map
         this.$map.style.display = 'block';
     };
@@ -427,9 +385,87 @@ var ClickableMap = {};
         }
     };
 
-    // Build table for state links list
+    // Live state links
+    this.mapObject.prototype.wireStateLink = function(stateId, addLiveClassName, linkType) {
+        var clickFn = null;
+        linkType = linkType ? linkType : '';
+        var $stateLink = global.getEleByQuery('#' + this.$map.id + ' .' + global.stateIdToDomClass(stateId) + linkType);
+
+        // Add css class if needed
+        if(this.statesData[stateId].cssClass != null) {
+            $stateLink.setAttribute('class', this.statesData[stateId].cssClass);
+        }
+
+        // Disabled state
+        if(this.statesData[stateId].isDisabled) {
+            clickFn = null;
+        }
+        // State specific URL
+        else if(this.statesData[stateId].linkUrl != null) {
+            var self = this;
+            clickFn = function(e) {
+                var isPop = false;
+                if(self.statesData[stateId].overridePopLink != null) {
+                    isPop = self.statesData[stateId].overridePopLink;
+                }
+                else if(self.globalData.popLink) {
+                    isPop = true;
+                }
+                if(isPop) {
+                    window.open(self.statesData[stateId].linkUrl);
+                }
+                else {
+                    document.location.href = self.statesData[stateId].linkUrl;
+                }
+            };
+        }
+        // Global link URL
+        else if(this.globalData.globalLinkUrl != null) {
+            var self = this;
+            clickFn = function(e) {
+                var normalizedUrl = self.globalData.globalLinkUrl.replaceAll('@state', stateId);
+                var isPop = false;
+                if(self.statesData[stateId].overridePopLink != null) {
+                    isPop = self.statesData[stateId].overridePopLink;
+                }
+                else if(self.globalData.popLink) {
+                    isPop = true;
+                }
+                if(isPop) {
+                    window.open(normalizedUrl);
+                }
+                else {
+                    document.location.href = normalizedUrl;
+                }
+            };
+        }
+        // Global Javascript callback
+        else if(this.globalData.globalJsCallback != null) {
+            var self = this;
+            clickFn = function(e) {
+                var fn = window[self.globalData.globalJsCallback];
+                if(typeof fn == 'function') {
+                    fn(stateId);
+                }
+            };
+        }
+
+        // Finally, assign the function
+        $stateLink.onclick = clickFn;
+
+        // Add class for live links styling
+        if(addLiveClassName) {
+            var liveLinkClassName = classPrefix + 'live-link';
+            $stateLink.className = $stateLink.className.replace(' ' + liveLinkClassName, '');
+            if(clickFn != null) {
+                $stateLink.className = $stateLink.className + ' ' + liveLinkClassName;
+            }
+        }
+    };
+
+    // Display map links list
     this.mapObject.prototype.displayMapLinksList = function() {
-        var $linkLists = global.getEleById(classPrefix + 'link-list');
+        var $linkList = global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'listview');
         var allListsHtml = '';
         var stateIds = [];
         for(var stateId in this.statesData) {
@@ -445,25 +481,27 @@ var ClickableMap = {};
             var slicedIds = stateIds.slice(sliceStart, sliceStart + itemsPerList);
             sliceStart += itemsPerList;
             if(slicedIds.length > 0) {
-                var listHtml = '<ul style="width:' + widthPercent + '%;">';
+                var ul = document.createElement('UL');
+                ul.style.maxWidth = widthPercent + '%';
                 for(var x = 0; x < slicedIds.length; ++x) {
-                    listHtml += '<li><span></span>';
-                    listHtml += '<a id="' + classPrefix + 'state-' + slicedIds[x].toLowerCase() + '-listview">';
-                    listHtml += this.statesData[slicedIds[x]].title;
-                    listHtml += '</a></li>';
+                    var li = document.createElement('LI');
+                    li.appendChild(document.createElement('SPAN'));
+                    var a = document.createElement('A');
+                    a.className = classPrefix + 'state-' + slicedIds[x].toLowerCase() + '-listview';
+                    a.textContent = this.statesData[slicedIds[x]].title;
+                    li.appendChild(a);
+                    ul.appendChild(li);
                 }
-                listHtml += '</ul>';
-                allListsHtml += listHtml;
+                $linkList.appendChild(ul);
             }
         }
-        $linkLists.innerHTML = allListsHtml;
 
         // Calculate the links for states
         for(var stateId in this.statesData) {
             if(!this.statesData.hasOwnProperty(stateId)) {
                 continue;
             }
-            createLiveStateLink(stateId, '-listview');
+            this.wireStateLink(stateId, true, '-listview');
         }
     };
 
