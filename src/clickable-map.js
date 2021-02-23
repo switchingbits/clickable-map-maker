@@ -268,9 +268,6 @@ var ClickableMap = {};
                 });
                 $stateLink = null;
             }.call(this, stateId));
-
-            // Setup click handlers
-            this.wireStateLink(stateId, false);
         }
                 
         // Get an ID on the shadow
@@ -288,6 +285,7 @@ var ClickableMap = {};
         this.$map.style.width = this.globalData.width + this.globalData.widthUnits;
         this.$map.style.backgroundColor = this.globalData.backgroundFill;
         this.$map.style.fontFamily = this.globalData.fontName;
+        this.$map.style.fontSize = this.globalData.fontSize;
         global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'title').textContent = this.globalData.mapTitle;
         if(this.globalData.creditLink != null && this.globalData.creditLink != '') {
             global.getEleByQuery('#' + this.$map.id + ' .' + classPrefix + 'credit-link').innerHTML = '<a target="_blank" href="' + creditLinkUrl + '"></a>';
@@ -335,6 +333,9 @@ var ClickableMap = {};
             for(var i = 0; i < $allLabels.length; ++i) {
                 $allLabels.item(i).style.fill = this.globalData.innerLabelColor;
             }
+
+            // Wire state click handlers
+            this.wireStateLink(stateId, false);
         }
 
         // State label override for "outer" labels
@@ -393,7 +394,7 @@ var ClickableMap = {};
 
         // Add css class if needed
         if(this.statesData[stateId].cssClass != null) {
-            $stateLink.setAttribute('class', this.statesData[stateId].cssClass);
+            $stateLink.setAttribute('class', $stateLink.getAttribute('class') + ' ' + this.statesData[stateId].cssClass);
         }
 
         // Disabled state
@@ -446,6 +447,9 @@ var ClickableMap = {};
                 var fn = window[self.globalData.globalJsCallback];
                 if(typeof fn == 'function') {
                     fn(stateId);
+                }
+                else {
+                    console.log('Unable to execute function: ' + self.globalData.globalJsCallback + '("' + stateId + '")');
                 }
             };
         }
