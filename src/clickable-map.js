@@ -378,11 +378,16 @@ var ClickableMap = {};
 
      // Set states data
     this.mapObject.prototype.setStatesData = function(data) {
-        for(var setting in this.statesData) {
-            if(!this.statesData.hasOwnProperty(setting) || !data.hasOwnProperty(setting)) {
+        for(var state in this.statesData) {
+            if(!this.statesData.hasOwnProperty(state) || !data.hasOwnProperty(state)) {
                 continue;
             }
-            this.statesData[setting] = data[setting];
+            for(var setting in this.statesData[state]) {
+                if(!this.statesData[state].hasOwnProperty(setting) || !data[state].hasOwnProperty(setting)) {
+                    continue;
+                }
+                this.statesData[state][setting] = data[state][setting];
+            }
         }
     };
 
