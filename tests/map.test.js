@@ -77,24 +77,5 @@ it('should properly display the map according to js object', async() => {
     expect(await alabamaPath.getCssValue('fill')).toEqual('rgb(255, 0, 0)');
     await driver.actions().move({x: 1, y: 1, origin: alabama}).perform();
     expect(await alabamaPath.getCssValue('fill')).toEqual('rgb(0, 255, 0)');
-    
-    // // Map title
-    // var mapTitle = await driver.findElement(By.css('#cmm-usa .cmm-usa-title'));
-    // expect(await mapTitle.getText()).toEqual('<b>Title trick');
 
-    // // State fills and label hover on/off
-    // var sampleOuterStateLabel = await driver.findElement(By.css('#cmm-usa .cmm-usa-state-vt text'));
-    // expect(await sampleOuterStateLabel.getCssValue('fill')).toEqual('rgb(0, 255, 0)');
-    // var sampleInnerStateLabel = await driver.findElement(By.css('#cmm-usa .cmm-usa-state-ny text'));
-    // expect(await sampleInnerStateLabel.getCssValue('fill')).toEqual('rgb(0, 0, 255)');
-    // var sampleState = await driver.findElement(By.css('#cmm-usa .cmm-usa-state-vt path'));
-    // expect(await sampleState.getCssValue('fill')).toEqual('rgb(0, 255, 0)');
-    // await driver.actions().move({x: 1, y: 1, origin: sampleState}).perform();
-    // expect(await sampleState.getCssValue('fill')).toEqual('rgb(255, 0, 0)');
-    // expect(await sampleOuterStateLabel.getCssValue('fill')).toEqual('rgb(0, 0, 0)');
-
-    // // Border
-    // expect(await sampleState.getCssValue('stroke-dasharray')).toEqual('3px, 5px');
-
-    expect("ee").toEqual('ee');
 })
