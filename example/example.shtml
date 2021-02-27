@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<body>
+
+
+<link rel="stylesheet" href="../src/styles.css">
+
+<!--#include virtual="../src/layout.html" -->
+
+<script src="../src/clickable-map.js"></script>
+
+<script>
+    var myUsaMap = ClickableMap.create('cmm-usa');
+    myUsaMap.setGlobalData({
+        "width":"800",
+        "widthUnits":"px",
+        "fontSize":"12px",
+        "fontName":"Arial",
+        "fill":"#336699",
+        "hoverFill":"#ffffff",
+        "disabledFill":"#c2c2c2",
+        "backgroundFill":"#ffffff",
+        "innerLabelColor":"#ffffff",
+        "outerLabelColor":"#000000",
+        "hoverLabelColor":"#d64933",
+        "borderType":null,
+        "borderStroke":"#225588",
+        "enableShadows":true,
+        "popLink":false,
+        "showStateTitleAndDescOnHover":true,
+        "showLinksList":true,
+        "globalLinkUrl":"link/to/@state",
+        "globalJsCallback":null,
+        "mapTitle":"Select state",
+        "creditLink":"Credit link"
+    });
+    myUsaMap.setStatesData({
+        "AL":{
+            "description":"Short accessibility description",
+            "longDescription":"<ul><li>Description</li></ul>",
+            "linkUrl":"http://www.example.com",
+            "isDisabled":false,
+            "isHovering":false,
+            "cssClass":"test-class",
+            "overrideFill":"#ff0000",
+            "overrideFillEnabled":true,
+            "overrideHoverFill":"#00ff00",
+            "overrideHoverFillEnabled":true,
+            "overridePopLink":false
+        },
+        "CO":{
+            "isDisabled":true,
+            "longDescription":"State is disabled",
+        }
+    });
+    myUsaMap.draw();
+
+    function logState(state) {
+        console.log(state);
+    }
+</script>
+
+</body>
+</html>

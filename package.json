@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --silent=false --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/johniskew/clickable-map-maker#readme",
   "devDependencies": {
-    "jest": "^26.6.3"
+    "chromedriver": "^88.0.0",
+    "jest": "^26.6.3",
+    "selenium-webdriver": "^4.0.0-beta.1"
   }
 }
