@@ -1,1 +1,2 @@
 # clickable-map-maker
+See the example folder to see how to implement the clickable map maker code. To use a GUI to create and edit your map, check out <a href="http://clickablemapmaker.com/">http://clickablemapmaker.com/</a>
