@@ -1,4 +1,4 @@
-it('should do stuff', async() => {
+it('should properly display the map according to js object', async() => {
     const chrome = require('selenium-webdriver/chrome');
     const { Builder, By, Key, until } = require('selenium-webdriver');
     
@@ -13,24 +13,6 @@ it('should do stuff', async() => {
         .build();
     await driver.get(testUrl);
 
-    // // Set field attributes (colors first)
-    // await driver.findElement(By.id('background-fill')).sendKeys("#0000ff");
-    // await driver.findElement(By.id('fill')).sendKeys("#00ff00");
-    // await driver.findElement(By.id('hover-fill')).sendKeys("#ff0000");
-    // //await driver.findElement(By.id('disabled-fill')).sendKeys("#000000"); -- Can't be tested yet
-    // await driver.findElement(By.id('hover-label-color')).sendKeys("#000000");
-    // await driver.findElement(By.id('inner-label-color')).sendKeys("#0000ff");
-    // await driver.findElement(By.id('outer-label-color')).sendKeys("#00ff00");
-    // await driver.findElement(By.id('border-stroke')).sendKeys("#ff0000");
-    // await driver.findElement(By.id('width')).clear();
-    // await driver.findElement(By.id('width')).sendKeys('75');
-    // await driver.findElement(By.css('#width-units > option[value=\'%\']')).click();
-    // await driver.findElement(By.css('#font-name > option[value=\'Tahoma\']')).click();
-    // await driver.findElement(By.css('#font-size > option[value=\'12px\']')).click();
-    // await driver.findElement(By.css('#border-type > option[value=\'3,5\']')).click();
-    // await driver.findElement(By.id('map-title')).clear();
-    // await driver.findElement(By.id('map-title')).sendKeys('<b>Title trick');
-    
     // Map global width, font family, font size, background color
     var mapDiv = await driver.findElement(By.id('cmm-usa'));
     expect(await mapDiv.getCssValue('width')).toEqual('800px');
