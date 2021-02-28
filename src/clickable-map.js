@@ -60,7 +60,7 @@ var ClickableMap = {};
             enableShadows: true,
             popLink: false,
             showStateTitleAndDescOnHover: true,
-            showLinksList: true,
+            showLinksList: false,
             globalLinkUrl: null,
             globalJsCallback: null,
             mapTitle: 'Choose your state below',
